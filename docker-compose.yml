@@ -1,26 +1,11 @@
 version: '3.4'
 services:
   app:
-    build: .
+    image: updev/daxy
     ports:
       - "8081:80"
     volumes:
       - ./:/var/www/
-    depends_on:
-      - mysql
     environment:
       APP_ENV: dev
-      DATABASE_URL: mysql://daxy:daxypassword@mysql:3306/daxy
-  mysql:
-    image: percona:5.7
-    volumes:
-      - mysql-data:/var/lib/mysql
-    environment:
-      MYSQL_ROOT_PASSWORD: superadmin
-      MYSQL_DATABASE: daxy
-      MYSQL_USER: daxy
-      MYSQL_PASSWORD: daxypassword
-      TZ: Europe/Moscow
-
-volumes:
-  mysql-data:
+      DATABASE_URL: mysql://user:password@host:3306/daxy
