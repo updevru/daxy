@@ -15,6 +15,9 @@ easy_admin:
             icon: 'shopping-cart'
             children:
               - Order
+          - label: 'Статистика'
+            icon: 'chart-bar'
+            children:
               - OrderSource
           - label: 'Отчеты'
             icon: 'chart-line'
@@ -126,7 +129,7 @@ easy_admin:
 
         OrderSource:
           class: App\Entity\OrderSource
-          label: 'Источники заказов'
+          label: 'Ассоциированные конверсии'
           list:
             filters: ['integration', 'type', 'date', 'orderId', 'source']
             fields:
