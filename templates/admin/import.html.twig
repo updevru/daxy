@@ -1,0 +1,18 @@
+{% extends '@EasyAdmin/page/content.html.twig' %}
+{% form_theme form with easyadmin_config('design.form_theme') %}
+
+{% block body_class 'edit' %}
+
+{% block content_title %}
+Импорт расходов
+{% endblock %}
+
+{% block main %}
+    <div class="card border-light">
+        <div class="card-body">
+            Для загрузки расходов вручную используйте .csv формат - <a href="/data/import_example.csv">пример</a>.
+        </div>
+    </div>
+
+    {{ form(form) }}
+{% endblock %}

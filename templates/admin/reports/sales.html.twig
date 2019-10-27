@@ -1,0 +1,44 @@
+{% extends '@EasyAdmin/page/content.html.twig' %}
+{% form_theme filter with easyadmin_config('design.form_theme') %}
+
+
+{% block content_title %}
+    Отчет по продажам
+{% endblock %}
+
+{% block main %}
+    {{ form(filter) }}
+
+    {% if report %}
+    <table class="table datagrid">
+        <thead>
+        <tr>
+        {% for column in report.getColumns() %}
+            <th><span>{{ column.title|trans }}</span></th>
+        {% endfor %}
+        </tr>
+        </thead>
+        <tbody>
+        {% for row in report.getRows() %}
+            <tr>
+            {% for column in report.getColumns() %}
+            <td>
+                {{ row[column.name] }}
+            </td>
+            {% endfor %}
+            </tr>
+        {% endfor %}
+        </tbody>
+        <tfoot>
+        {% set totalRow = report.getTotalRow() %}
+        <tr>
+            {% for column in report.getColumns() %}
+                <th>
+                    {{ totalRow[column.name] }}
+                </th>
+            {% endfor %}
+        </tr>
+        </tfoot>
+    </table>
+    {% endif %}
+{% endblock %}

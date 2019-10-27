@@ -1,0 +1,138 @@
+easy_admin:
+    site_name: 'Daxy'
+
+    design:
+        assets:
+          css:
+            - '/css/application.css'
+        menu:
+          - label: 'Реклама'
+            icon: 'ad'
+            children:
+              - TrafficCost
+              - ImportTrafficCost
+          - label: 'Продажи'
+            icon: 'shopping-cart'
+            children:
+              - Order
+              - OrderSource
+          - label: 'Отчеты'
+            icon: 'chart-line'
+            children:
+              - { label: 'Отчет по продажам', route: 'reports_sales' }
+          - {entity: User, icon: 'user-friends'}
+          - {entity: Project, icon: 'briefcase'}
+          - {entity: IntegrationService, icon: 'exchange-alt'}
+
+    list:
+      max_results: 100
+      batch_actions: ['delete']
+
+    formats:
+      date:     'Y-m-d'
+      time:     'H:i'
+      datetime: 'Y-m-d H:i:s'
+
+    entities:
+        Order:
+            class: App\Entity\Order
+            label: "Заказы"
+
+        AdvertSystem:
+          class: App\Entity\AdvertSystem
+          label: "Рекламные системы"
+          list:
+            fields:
+              - id
+              - title
+
+        TrafficCost:
+          class: App\Entity\Cost
+          label: "Расходы"
+          list:
+            filters: ['integration', 'date', 'source', 'medium']
+            fields:
+              - id
+              - integration
+              - date
+              - cost
+              - views
+              - clicks
+              - source
+              - medium
+              - campaign
+
+        ImportTrafficCost:
+          class: App\Entity\Cost
+          controller: App\Controller\ImportController
+          label: "Импорт расходов"
+
+        Project:
+          class: App\Entity\Project
+          label: "Проекты"
+          list:
+              fields:
+                  - id
+                  - title
+
+        IntegrationService:
+          class: App\Entity\IntegrationService
+          label: "Сервисы"
+          controller: App\Controller\IntegrationController
+          list:
+                fields:
+                    - id
+                    - enabled
+                    - project
+                    - type
+                    - dateNext
+                    - dateStarted
+                    - dateFinished
+                    - log
+          edit:
+            title:  'Edit service'
+            fields:
+              - title
+              - enabled
+              - { property: 'period', type: 'choice', type_options: {choices: {'hour': 'hour', 'day': 'day', 'week': 'week'}} }
+              - dateStart
+          new:
+            title:  'Add service'
+            fields:
+              - title
+              - type
+              - project
+              - { property: 'period', type: 'choice', type_options: {choices: {'hour': 'hour', 'day': 'day', 'week': 'week'}} }
+              - dateStart
+
+
+        User:
+          class: App\Entity\User
+          label: "Пользователи"
+          list:
+              fields:
+                  - enabled
+                  - username
+                  - email
+                  - lastLogin
+          form:
+              fields:
+                  - username
+                  - email
+                  - enabled
+                  # if administrators are allowed to edit users' passwords and roles, add this:
+                  - { property: 'plainPassword', type: 'text', type_options: { required: false } }
+                  - { property: 'roles', type: 'choice', type_options: { multiple: true, choices: { 'ROLE_USER': 'ROLE_USER', 'ROLE_ADMIN': 'ROLE_ADMIN' } } }
+
+        OrderSource:
+          class: App\Entity\OrderSource
+          label: 'Источники заказов'
+          list:
+            filters: ['integration', 'type', 'date', 'orderId', 'source']
+            fields:
+              - date
+              - type
+              - orderId
+              - source
+              - medium
+              - amount

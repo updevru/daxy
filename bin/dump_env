@@ -1,0 +1,27 @@
+#!/usr/bin/env php
+<?php
+
+$args = $argv;
+unset($args[0]);
+
+if (count($args) == 0) {
+    echo "Add arguments for mask\n";
+    exit();
+}
+
+$content = null;
+foreach ($args as $mask) {
+    foreach ($_ENV as $name => $value) {
+        if (!preg_match("/{$mask}.+/", $name)) {
+            continue;
+        }
+        $content .= sprintf("%s=%s\n", $name, $value);
+    }
+}
+
+if (is_null($content)) {
+    echo "Content for dump is empty\n";
+    exit();
+}
+
+file_put_contents('/var/www/.env.local', $content);
